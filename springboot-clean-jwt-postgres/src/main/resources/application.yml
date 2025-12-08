@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/your_database_name
+    username: ${DB_USER:}
+    password: ${DB_PASS:}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: ${JWT_SECRET:change-me}
+  expiration: 3600
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework: INFO
+    com.example.cleanapp: DEBUG

@@ -1,0 +1,59 @@
+# General
+*.class
+*.log
+*.tmp
+*.swp
+*~
+
+# Maven / build
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+*.jar
+*.war
+*.ear
+
+# IntelliJ IDEA
+/.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+/.vscode/
+
+# Eclipse
+/.classpath
+/.project
+/.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files (do not commit real secrets)
+.env
+.env.local
+.env.*
+!.env.exemple
+
+# Docker
+docker-compose.override.yml
+
+# Generated sources
+/generated-sources/
+/generated-test-sources/
+
+# Test output
+/target/surefire-reports/
+
+# Logs and temporary runtime files
+/logs/
+*.pid
+
+# Database files
+*.db
+
+# Others
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
