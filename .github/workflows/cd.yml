@@ -27,11 +27,8 @@ jobs:
           path: ~/.m2/repository
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 
-      - name: Make mvnw executable
-        run: chmod +x ./mvnw
-
       - name: Build artifact
-        run: ./mvnw -B -DskipTests clean package
+        run: mvn -B -DskipTests clean package
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
