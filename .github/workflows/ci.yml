@@ -25,5 +25,8 @@ jobs:
           path: ~/.m2/repository
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 
+      - name: Make mvnw executable
+        run: chmod +x ./mvnw
+
       - name: Build and run tests
         run: ./mvnw -B -DskipTests=false clean verify
