@@ -40,6 +40,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set lowercase image name
+        id: set-image
+        run: |
+          echo "image=$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
       - name: Build and push image to GHCR
         uses: docker/build-push-action@v4
         with:
@@ -47,23 +52,11 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ toLower(github.repository) }}:latest
-            ghcr.io/${{ toLower(github.repository) }}:${{ github.sha }}
+            ghcr.io/${{ steps.set-image.outputs.image }}:latest
+            ghcr.io/${{ steps.set-image.outputs.image }}:${{ github.sha }}
 
       - name: Tag image with release tag and push (if tag)
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          docker tag ghcr.io/${{ toLower(github.repository) }}:${{ github.sha }} ghcr.io/${{ toLower(github.repository) }}:${{ github.ref_name }}
-          docker push ghcr.io/${{ toLower(github.repository) }}:${{ github.ref_name }}
-
-      - name: Push to Docker Hub (optional)
-        if: ${{ env.DOCKERHUB_USERNAME && env.DOCKERHUB_TOKEN }}
-        env:
-          DOCKERHUB_USER: ${{ env.DOCKERHUB_USERNAME }}
-          REPO_NAME: ${{ github.repository }}
-        run: |
-          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u $DOCKERHUB_USER --password-stdin
-          docker tag ghcr.io/${{ toLower(github.repository) }}:${{ github.sha }} $DOCKERHUB_USER/${{ toLower(github.repository) }}:${{ github.sha }}
-          docker tag ghcr.io/${{ toLower(github.repository) }}:latest $DOCKERHUB_USER/${{ toLower(github.repository) }}:latest
-          docker push $DOCKERHUB_USER/${{ toLower(github.repository) }}:${{ github.sha }}
-          docker push $DOCKERHUB_USER/${{ toLower(github.repository) }}:latest
+          docker tag ghcr.io/${{ steps.set-image.outputs.image }}:${{ github.sha }} ghcr.io/${{ steps.set-image.outputs.image }}:${{ github.ref_name }}
+          docker push ghcr.io/${{ steps.set-image.outputs.image }}:${{ github.ref_name }}
